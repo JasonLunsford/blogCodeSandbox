@@ -1,0 +1,26 @@
+/**
+ * This is the main application stylesheet. It should include or import all
+ * stylesheets used throughout the application as this is the only stylesheet in
+ * the Grunt configuration that is automatically processed.
+ */
+
+$bootstrap-sass-asset-helper: (twbs-font-path("") != unquote('twbs-font-path("")')) !default;
+@import '../../vendor/bootstrap-sass/vendor/assets/stylesheets/bootstrap';
+
+$fa-font-path: 'fonts';
+$ionicons-font-path: 'fonts';
+$opensans-font-path: 'fonts';
+@import '../../vendor/fontawesome/scss/font-awesome.scss';
+@import '../../vendor/ionicons/scss/ionicons.scss';
+@import url(http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,400,300,600,700);
+
+// Module Stylesheet Imports
+
+@import 'global_styles';
+@import '../app/sandbox/sandbox';
+
+/**
+ * This is our main variables file. We must include it last so we can overwrite any variable
+ * definitions in our imported stylesheets.
+ */
+@import 'variables.scss';
