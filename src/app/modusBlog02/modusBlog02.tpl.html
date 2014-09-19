@@ -1,10 +1,100 @@
-<div class="container-fluid">
-  <div class="row">
-    <h1 class="col-xs-12 col-sm-12 col-md-12 col-lg-12 main-content-title">{{currentSection}}</h1>
-  </div>
-  <div class="row">
-  	<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-  		<p>Test Area</p>
-  	</div>
-  </div>
+<div class="container-fluid" data-ng-controller="ExampleController as example">
+	<div class="row">
+		<h1 class="col-xs-12 col-sm-12 col-md-12 col-lg-12 main-content-title">{{currentSection}}</h1>
+	</div>
+	<div class="row">
+		<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 example-box">
+			<h2>one-way binding: double curly bracket and data-ng-bind</h2>
+			<p>content pushed from $scope</p>
+			<div>
+				<h3>{{ doubleCurl }}</h3>
+			</div>
+			<div>
+				<h3 data-ng-bind="boundByBind"></h3>
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 example-box">
+			<h2>two-way binding: no "dot" (sharing primative, the "@" isolate scope option)</h2>
+			<p>Value is a string, child scope's version will not overwrite parent's, child scope now has an identical property name (firstName) but no update capability</p>
+			<div>
+				<label>Parent Controller </label>
+				<input type="text" data-ng-model="firstName" />
+				<h3>{{ firstName || "Root" }}</h3>
+			</div>
+			<div data-ng-controller="NoDotController as noDotExample">
+				<label>Child Controller </label>
+				<input type="text" data-ng-model="firstName" />
+				<h3>{{ firstName || "First" }}</h3>
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 example-box">
+			<h2>two-way binding: with "dot" (sharing object, the "=" isolate scope option)</h2>
+			<p>Value becomes a property in an object shared between the ngModel directive and parent controller</p>
+			<div>
+				<label>Parent Controller </label>
+				<input type="text" data-ng-model="user.firstName" />
+				<h3>{{ user.firstName || "Root" }}</h3>
+			</div>
+			<div data-ng-controller="DotController as dotExample">
+				<label>Child Controller </label>
+				<input type="text" data-ng-model="user.firstName" />
+				<h3>{{ user.firstName || "First" }}</h3>
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 example-box" data-ng-controller="FilterController as filterExample">
+			<h2>two-way binding: filtering</h2>
+			<p>Parent controller populates ngRepeat's array</p>
+			<div>
+				<label>Filter By </label>
+				<input type="text" data-ng-model="filterTerm" />
+			</div>
+			<div>
+				<p>Names on the list</p>
+				<ul>
+					<li data-ng-repeat="name in filterExample.nameList | filter:filterTerm">{{ name.name }}</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 example-box" data-ng-controller="FormatController as formatExample">
+			<h2>two-way binding: parsing</h2>
+			<p>ngModelController provides built in user input validation, powered by the $digest cycle and fed by the $parsers array. $parsers contains all built in validator methods and any custom validators (in the form of a directive) we added to the $parsers array</p>
+			<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+				<!-- submitMyForm passes variable indicating whether all fields pass the dirty checks -->
+				<!-- use 'novalidate' to disable built in html5 input validation -->
+				<!-- parsingForm is a child scope, while parseObject is a ngModel object -->
+				<form role="form"
+					  name="parsingForm"
+					  data-ng-submit="formatExample.submitMyForm(parsingForm.$valid)"
+					  novalidate>
+					<div class="form-group" data-ng-class="{'has-error' : parsingForm.name.$invalid && !parsingForm.name.$pristine}">
+						<label>Name</label>
+						<!-- ngModel binds input to Angular arrays, adding them to the $watch list and making them accessible to
+						     FormatController's $scope, if necessary -->
+						<input type="text" name="name" class="form-control" data-ng-model="parseObject.name" required />
+						<p data-ng-show="parsingForm.name.$invalid && !parsingForm.name.$pristine" class="help-block">Name required.</p>
+					</div>
+					<div class="form-group">
+						<label>Email</label>
+						<!-- name attribute important, how we associate message to incorrect value -->
+						<input type="email" name="email" class="form-control" data-ng-model="parseObject.email" />
+						<p data-ng-show="parsingForm.email.$invalid && !parsingForm.name.$pristine" class="help-block">Email formatted wrong.</p>
+					</div>
+					<div class="form-group">
+						<label>Age</label>
+						<input type="number" name="age" class="form-control" data-ng-model="parseObject.age" />
+						<p data-ng-show="parsingForm.age.$invalid && !parsingForm.name.$pristine" class="help-block">Numbers only.</p>
+					</div>
+					<button type="submit" data-ng-disabled="parsingForm.$invalid">Submit Me</button>
+				</form>
+			</div>
+		</div>
+	</div>
 </div>
